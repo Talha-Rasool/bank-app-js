@@ -65,26 +65,55 @@ const inputClosePin = document.querySelector('.form__input--pin');
 
 /////////////////////////////////////////////////
 
-function displayMovements(movements){
-    containerMovements.innerHTML='';
-    movements.forEach(function(mov,i){
-        const type= mov > 0? 'deposit':'withdrawal';
-        const html=`<div class="movements__row">
-          <div class="movements__type movements__type--${type}">${i+1} ${type}</div>
+function displayMovements(movements) {
+  containerMovements.innerHTML = '';
+  movements.forEach(function (mov, i) {
+    const type = mov > 0 ? 'deposit' : 'withdrawal';
+    const html = `<div class="movements__row">
+          <div class="movements__type movements__type--${type}">${
+      i + 1
+    } ${type}</div>
           <div class="movements__value">${mov}</div>
         </div>`;
 
-        containerMovements.insertAdjacentHTML('afterbegin',html);
-    })
+    containerMovements.insertAdjacentHTML('afterbegin', html);
+  });
+}
 
-};
-displayMovements(account1.movements)
+displayMovements(account1.movements);
+
+function totalSum(movement){
+    const balance=movement.reduce((acc,mov)=>{
+        return acc+mov;
+    },0);
+    labelBalance.textContent=`${balance} EUR`;
+}
+totalSum(account1.movements)
 
 
-const currencies= new Map([
-    ['USD', 'United States dollar'],
-    ['EUR', 'Euro'],
-    ['GBP', 'Pound sterling'],
-])
+const user = 'Steven Thomas Willams';
+const username = user
+  .toLowerCase()
+  .split(' ')
+  .map(name => name[0])
+  .join('');
 
-const movements=[200,450,-400,3000,-650,-130,70,1300];
+function userName(acc) {
+  acc.forEach(function (acct) {
+    acct.username = acct.owner
+      .toLowerCase()
+      .split(' ')
+      .map(name => name[0])
+      .join('');
+  });
+}
+userName(accounts);
+console.log(accounts);
+
+// const currencies = new Map([
+//   ['USD', 'United States dollar'],
+//   ['EUR', 'Euro'],
+//   ['GBP', 'Pound sterling'],
+// ]);
+
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
