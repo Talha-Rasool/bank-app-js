@@ -65,39 +65,6 @@ const inputClosePin = document.querySelector('.form__input--pin');
 
 /////////////////////////////////////////////////
 
-function displayMovements(movements) {
-  containerMovements.innerHTML = '';
-  movements.forEach(function (mov, i) {
-    const type = mov > 0 ? 'deposit' : 'withdrawal';
-    const html = `<div class="movements__row">
-          <div class="movements__type movements__type--${type}">${
-      i + 1
-    } ${type}</div>
-          <div class="movements__value">${mov}</div>
-        </div>`;
-
-    containerMovements.insertAdjacentHTML('afterbegin', html);
-  });
-}
-
-displayMovements(account1.movements);
-
-function totalSum(movement){
-    const balance=movement.reduce((acc,mov)=>{
-        return acc+mov;
-    },0);
-    labelBalance.textContent=`${balance} EUR`;
-}
-totalSum(account1.movements)
-
-
-const user = 'Steven Thomas Willams';
-const username = user
-  .toLowerCase()
-  .split(' ')
-  .map(name => name[0])
-  .join('');
-
 function userName(acc) {
   acc.forEach(function (acct) {
     acct.username = acct.owner
@@ -108,7 +75,71 @@ function userName(acc) {
   });
 }
 userName(accounts);
-console.log(accounts);
+
+function displayMovements(movements) {
+  containerMovements.innerHTML = '';
+
+  movements.forEach(function (mov, i) {
+    const type = mov > 0 ? 'deposit' : 'withdrawal';
+    const html = `<div class="movements__row">
+          <div class="movements__type movements__type--${type}">${
+      i + 1
+    } ${type}</div>
+          <div class="movements__value">${mov}€</div>
+        </div>`;
+
+    containerMovements.insertAdjacentHTML('afterbegin', html);
+  });
+}
+
+displayMovements(account1.movements);
+
+function displaySummary(movements) {
+  const income = movements
+    .filter(mov => mov > 0)
+    .reduce((acc, mov) => acc + mov, 0);
+  labelSumIn.textContent = `${income}€`;
+
+  const out = movements
+    .filter(mov => mov < 0)
+    .reduce((acc, mov) => acc + mov, 0);
+  labelSumOut.textContent = `${Math.abs(out)}€`;
+
+  const interest = movements
+    .filter(mov => mov > 0)
+    .map(mov => (mov * 1.2) / 100)
+    .reduce((acc, mov) => acc + mov, 0);
+  labelSumInterest.textContent = `${interest}€`;
+}
+
+displaySummary(account1.movements);
+
+function totalSum(movement) {
+  const balance = movement.reduce((acc, mov) => {
+    return acc + mov;
+  }, 0);
+  labelBalance.textContent = `${balance} €`;
+}
+totalSum(account1.movements);
+
+let currentAccount;
+
+btnLogin.addEventListener('click',function(e){
+    e.preventDefault();
+    
+   currentAccount= accounts.find(acc => acc.username===inputLoginUsername.value);
+   if (currentAccount?.pin===Number(inputLoginPin.value)){
+    labelWelcome.textContent=`Welcome back, ${currentAccount.owner.split(' ')[0]}`;
+   
+   }
+   containerApp.style.opacity=100;
+   
+
+
+})
+console.log(accounts)
+
+
 
 // const currencies = new Map([
 //   ['USD', 'United States dollar'],
@@ -117,7 +148,6 @@ console.log(accounts);
 // ]);
 
 const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
-
 
 /* 
 Julia and Kate are doing a study on dogs. So each of them asked 5 dog owners about their dog's age,
@@ -144,38 +174,41 @@ TEST DATA 2: Julia's data [9, 16, 6, 8, 3], Kate's data [10, 5, 6, 1, 4]
 GOOD LUCK 😀
 */
 
-function checkDogs(dogsJulia,dogsKate){
-    const dogsJuliaNew=[...dogsJulia];
-    dogsJuliaNew.reverse();
-    dogsJuliaNew.splice(-2,2);
-    const newDogs=[...dogsJuliaNew,...dogsKate];
-    console.log(newDogs);
-    newDogs.map((dg,i)=>{
-       const dogAge= dg >= 3?`Dog number ${i+1} is an adult, and is ${dg} years old`:`Dog number ${i+1} is still a puppy`;
-       console.log(dogAge);
-       return dogAge;
-    })
-    
-
-
-
+function checkDogs(dogsJulia, dogsKate) {
+  const dogsJuliaNew = [...dogsJulia];
+  dogsJuliaNew.reverse();
+  dogsJuliaNew.splice(-2, 2);
+  const newDogs = [...dogsJuliaNew, ...dogsKate];
+  
+  newDogs.map((dg,i) => {
+    const dogAge =
+      dg >= 3
+        ? `Dog number ${i + 1} is an adult, and is ${dg} years old`
+        : `Dog number ${i + 1} is still a puppy`;
+    // console.log(dogAge);
+    return dogAge;
+  });
 }
 // checkDogs([3, 5, 2, 12, 7],[4, 1, 15, 8, 3]);
-checkDogs([9, 16, 6, 8, 3],[10, 5, 6, 1, 4])
-
+checkDogs([9, 16, 6, 8, 3], [10, 5, 6, 1, 4]);
 
 /* 
-Let's go back to Julia and Kate's study about dogs. This time, they want to convert dog ages to human ages 
+Let's go back to Julia and Kate's study about dogs. This time, they want to convert dog ages to human
+ ages 
 and calculate the average age of the dogs in their study.
 
-Create a function 'calcAverageHumanAge', which accepts an arrays of dog's ages ('ages'), and does the following 
+Create a function 'calcAverageHumanAge', which accepts an arrays of dog's ages ('ages'), and does the
+ following 
 things in order:
 
-1. Calculate the dog age in human years using the following formula: if the dog is <= 2 years old, humanAge = 2 * dogAge
+1. Calculate the dog age in human years using the following formula: if the dog is <= 2 years old, 
+humanAge = 2 * dogAge
 . If the dog is > 2 years old, humanAge = 16 + dogAge * 4.
-2. Exclude all dogs that are less than 18 human years old (which is the same as keeping dogs that are at least 18 years old)
+2. Exclude all dogs that are less than 18 human years old (which is the same as keeping dogs that 
+are at least 18 years old)
 
-3. Calculate the average human age of all adult dogs (you should already know from other challenges how we calculate 
+3. Calculate the average human age of all adult dogs (you should already know from other challenges
+ how we calculate 
 averages 😉)
 4. Run the function for both test datasets
 
@@ -184,3 +217,18 @@ TEST DATA 2: [16, 6, 10, 5, 6, 1, 4]
 
 GOOD LUCK 😀
 */
+
+function calcAverageHumanAge(ages) {
+  const humanAge = ages.map((curr, i) => {
+    const convertAge = curr <= 2 ? curr * 2 : 16 + curr * 4;
+    return convertAge;
+  });
+//   console.log(humanAge);
+  const dog18 = humanAge.filter(curr => curr > 18);
+//   console.log(dog18);
+
+  const avrgeAge = dog18.reduce((acc, curr) => acc + curr / dog18.length, 0);
+//   console.log(avrgeAge);
+}
+calcAverageHumanAge([5, 2, 4, 1, 15, 8, 3]);
+calcAverageHumanAge([16, 6, 10, 5, 6, 1, 4]);
