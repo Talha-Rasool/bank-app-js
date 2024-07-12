@@ -151,6 +151,13 @@ btnLogin.addEventListener('click',function(e){
 })
 
 
+btnTransfer.addEventListener('click',function(e){
+    e.preventDefault();
+    const amount=Number(inputTransferAmount.value);
+    const recieverAcc=accounts.find(acc => acc.username === inputTransferTo.value);
+    console.log(amount,recieverAcc);
+})
+
 
 
 // const currencies = new Map([
