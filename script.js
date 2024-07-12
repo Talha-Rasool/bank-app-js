@@ -114,11 +114,11 @@ function displaySummary(acc) {
 
 
 
-function totalSum(movement) {
-  const balance = movement.reduce((acc, mov) => {
+function totalSum(acc) {
+  acc.balance = acc.movements.reduce((acc, mov) => {
     return acc + mov;
   }, 0);
-  labelBalance.textContent = `${balance} €`;
+  labelBalance.textContent = `${acc.balance} €`;
 }
 
 
@@ -141,15 +141,15 @@ btnLogin.addEventListener('click',function(e){
 
 
    //dispaly balance
-   totalSum(currentAccount.movements)
+   totalSum(currentAccount)
 
    // display summary
    displaySummary(currentAccount)
    
-
+   console.log(currentAccount)
 
 })
-console.log(accounts)
+
 
 
 
