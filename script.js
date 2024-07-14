@@ -118,15 +118,15 @@ function totalSum(acc) {
 }
 
 
-function updateUI(acc){
+function updateUI(currentAccount){
     //Display movements
-  displayMovements(acc.movements);
+  displayMovements(currentAccount.movements);
 
   //dispaly balance
-  totalSum(acc);
+  totalSum(currentAccount);
 
   // display summary
-  displaySummary(acc);
+  displaySummary(currentAccount);
 
 }
 
@@ -160,6 +160,7 @@ btnTransfer.addEventListener('click', function (e) {
     acc => acc.username === inputTransferTo.value
   );
   console.log(amount, recieverAcc);
+  inputTransferTo.value=inputTransferAmount.value='';
 
   if (
     amount > 0 &&
