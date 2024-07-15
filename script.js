@@ -117,9 +117,8 @@ function totalSum(acc) {
   labelBalance.textContent = `${acc.balance} €`;
 }
 
-
-function updateUI(currentAccount){
-    //Display movements
+function updateUI(currentAccount) {
+  //Display movements
   displayMovements(currentAccount.movements);
 
   //dispaly balance
@@ -127,7 +126,6 @@ function updateUI(currentAccount){
 
   // display summary
   displaySummary(currentAccount);
-
 }
 
 let currentAccount;
@@ -148,7 +146,7 @@ btnLogin.addEventListener('click', function (e) {
   inputLoginUsername.value = inputLoginPin.value = '';
   inputLoginPin.blur();
 
- updateUI(currentAccount);
+  updateUI(currentAccount);
 
   console.log(currentAccount);
 });
@@ -160,7 +158,7 @@ btnTransfer.addEventListener('click', function (e) {
     acc => acc.username === inputTransferTo.value
   );
   console.log(amount, recieverAcc);
-  inputTransferTo.value=inputTransferAmount.value='';
+  inputTransferTo.value = inputTransferAmount.value = '';
 
   if (
     amount > 0 &&
@@ -172,6 +170,23 @@ btnTransfer.addEventListener('click', function (e) {
     recieverAcc.movements.push(amount);
     updateUI(currentAccount);
   }
+});
+
+btnClose.addEventListener('click', function (e) {
+  e.preventDefault();
+  if (
+    inputCloseUsername.value === currentAccount.username &&
+    Number(inputClosePin.value === currentAccount.pin)
+  ) {
+    const index = accounts.findIndex( acc => acc.username === currentAccount.username);
+
+    
+    accounts.splice(index, 1);
+    console.log(index)
+    containerApp.style.opacity = 0;
+    
+  }
+  inputCloseUsername.value = inputClosePin.value = '';
 });
 
 // const currencies = new Map([
